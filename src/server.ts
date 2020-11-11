@@ -1,24 +1,31 @@
-import * as Koa from "koa";
-import * as KoaRouter from "koa-router";
-import { logger } from "mol-lib-common/debugging/logging/LoggerV2";
-import { KoaResponseHandler } from "mol-lib-common/network/router/KoaResponseHandler";
-import { config } from "./config/app-config";
-import { RegisterRoutes } from "./routes";
+import cors from "@koa/cors";
+import Router from "@koa/router";
+import Koa from "koa";
+import bodyParser from "koa-bodyparser";
+import { RegisterRoutes } from "../routes/routes";
+import { logger } from "./utils/logger";
 
-export async function startServer() {
+const startServer = async () => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			const app = new Koa();
+			app.use(bodyParser());
+			app.use(cors());
 
-	const router = new KoaRouter();
-	RegisterRoutes(router);
-	const HandledRoutes = new KoaResponseHandler(router.routes());
-	// Setup server
-	const koaServer = new Koa()
-		.use(HandledRoutes.build())
-		.use(router.allowedMethods());
+			const router = new Router();
+			RegisterRoutes(router);
+			app.use(router.routes());
 
-	return new Promise((resolve) => {
-		const server = koaServer.listen(config.port, async () => {
-			logger.info(`${config.name} v${config.version} started on port ${config.port}`);
-			resolve(server);
-		});
+			app.listen(3000, () => {
+				logger.info(`Server running on port 3000 🚀🚀🚀`);
+				resolve();
+			});
+		} catch (error) {
+			reject(error);
+		}
 	});
-}
+};
+
+startServer().catch((error) =>
+	logger.error("Error starting server => ", error)
+);
