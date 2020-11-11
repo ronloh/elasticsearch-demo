@@ -1,0 +1,28 @@
+{
+  "name": "elasticsearch-demo",
+  "version": "1.0.0",
+  "description": "A demo on how to use elasticsearch, for entry level",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsoa spec-and-routes && tsc",
+    "start": "docker-compose up -d --build",
+    "start:fresh": "docker-compose down --remove-orphans -v && npm start -- --force-recreate",
+    "logs": "docker logs -f elasticsearch-demo",
+    "stop": "docker-compose stop"
+  },
+  "dependencies": {
+    "koa": "^2.13.0",
+    "tsoa": "^3.4.0"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ronloh/elasticsearch-demo.git"
+  },
+  "author": "Wen He Loh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ronloh/elasticsearch-demo/issues"
+  },
+  "homepage": "https://github.com/ronloh/elasticsearch-demo#readme"
+}
