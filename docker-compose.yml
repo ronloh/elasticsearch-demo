@@ -1,34 +1,10 @@
 version: "3"
 
-volumes:
-  dist:
-  node_modules:
-  elasticsearch-data:
-
 services:
-  node:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "50k"
-        max-file: "10"
-    depends_on:
-      - elasticsearch
-    ports:
-      - 3000:3000
-    volumes:
-      - ./:/home/node/app
-      - dist:/service/dist
-      - node_modules:/service/node_modules
-    container_name: elasticsearch-demo
-
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.7.0
     environment:
-      - cluster.name=mol-elasticsearch
+      - cluster.name=elasticsearch
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - "discovery.type=single-node"
@@ -41,11 +17,25 @@ services:
     ports:
       - 9200:9200
     container_name: elasticsearch
+    networks: 
+      - elastic
 
   kibana:
     image: docker.elastic.co/kibana/kibana:7.7.0
+    depends_on: 
+      - elasticsearch
     environment:
       ELASTICSEARCH_HOSTS: http://elasticsearch:9200
     ports:
       - 5601:5601
     container_name: kibana
+    networks:
+      - elastic
+
+volumes:
+  elasticsearch-data:
+    driver: local
+
+networks:
+  elastic: 
+    driver: bridge
