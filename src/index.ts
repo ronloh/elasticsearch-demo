@@ -4,7 +4,7 @@ import { logger } from "./utils/logger";
 const startServer = async () => {
 	return new Promise(async (resolve, reject) => {
 		try {
-      await createTemplatesAndInitializeIndexes();
+    //   await createTemplatesAndInitializeIndexes();
       resolve();
 		} catch (error) {
 			reject(error);
