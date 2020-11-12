@@ -1,49 +1,49 @@
 {
-	settings: {
-		number_of_shards: "1",
-		number_of_replicas: "1",
-		analysis: {
-			normalizer: {
-				name_en_normalizer: {
-					type: "custom",
-					filter: ["uppercase"],
+	"settings": {
+		"number_of_shards": "1",
+		"number_of_replicas": "1",
+		"analysis": {
+			"normalizer": {
+				"name_en_normalizer": {
+					"type": "custom",
+					"filter": ["uppercase"],
 				},
 			},
 		},
 	},
-	index_patterns: [
+	"index_patterns": [
 		"event*"
 	],
-	mappings: {
-		properties: {
-			id: {
-				type: "keyword"
+	"mappings": {
+		"properties": {
+			"id": {
+				"type": "keyword"
 			},
-			name: {
-				type: "object",
-				properties: {
-					EN: {
-						type: "text",
-						fields: {
-							raw: {
-								type: "keyword",
-								normalizer: "name_en_normalizer",
+			"name": {
+				"type": "object",
+				"properties": {
+					"EN": {
+						"type": "text",
+						"fields": {
+							"raw": {
+								"type": "keyword",
+								"normalizer": "name_en_normalizer",
 							},
 						},
 					},
 				},
 			},
-			eventSessions: {
-				type: "nested",
-				properties: {
-					publishStartDateTime: {
-						type: "date",
+			"eventSessions": {
+				"type": "nested",
+				"properties": {
+					"publishStartDateTime": {
+						"type": "date",
 					},
-					publishEndDateTime: {
-						type: "date",
+					"publishEndDateTime": {
+						"type": "date",
 					},
-					sessionId: {
-						type: "keyword"
+					"sessionId": {
+						"type": "keyword"
 					},
 				},
 			},
